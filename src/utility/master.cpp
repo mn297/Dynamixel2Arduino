@@ -13,9 +13,13 @@ static void print_buffer_bytes(uint8_t *p_buf, uint16_t buf_len)
     SerialUSB.print(":");
   }
 }
-static void print_tx_packet(InfoToMakeDXLPacket_t &packet)
+static void print_tx_packet(InfoToMakeDXLPacket_t &packet, char *msg)
 {
-  SerialUSB.println("TX Packet");
+  if (msg)
+  {
+    SerialUSB.printf("%s()\n", msg);
+  }
+  SerialUSB.println("\tTX Packet");
   SerialUSB.printf("\tinfo_tx_packet_.generated_packet_length=%d\n", packet.generated_packet_length);
   uint16_t length = *(uint16_t *)(packet.p_packet_buf + DXL2_0_LENGTH_POS);
   SerialUSB.printf("\tlen=%d\n", length);
@@ -24,9 +28,13 @@ static void print_tx_packet(InfoToMakeDXLPacket_t &packet)
   SerialUSB.println();
 }
 
-static void print_rx_packet(InfoToParseDXLPacket_t &packet)
+static void print_rx_packet(InfoToParseDXLPacket_t &packet, char *msg)
 {
-  SerialUSB.println("RX Packet");
+  if (msg)
+  {
+    SerialUSB.printf("%s()\n", msg);
+  }
+  SerialUSB.println("\tRX Packet");
   SerialUSB.printf("\tinfo_rx_packet_.param_buf_capacity=%d\n", packet.param_buf_capacity);
   SerialUSB.printf("\tinfo_rx_packet_.packet_len=%d\n", packet.packet_len);
   SerialUSB.printf("\tinfo_rx_packet_.recv_param_len=%d\n", packet.recv_param_len);
@@ -1381,7 +1389,7 @@ bool Master::txInstPacket(uint8_t id, uint8_t inst_idx, uint8_t *p_param, uint16
     if (p_port_->write(info_tx_packet_.p_packet_buf, info_tx_packet_.generated_packet_length) == info_tx_packet_.generated_packet_length)
     {
 #if DYNAMIXEL_DEBUG_PRINT == 1
-      print_tx_packet(info_tx_packet_);
+      print_tx_packet(info_tx_packet_, __func__);
 #endif
       ret = true;
     }
@@ -1433,7 +1441,7 @@ Master::rxStatusPacket(uint8_t *p_param_buf, uint16_t param_buf_cap, uint32_t ti
           if ((protocol_ver_idx_ == 2 && info_rx_packet_.inst_idx == DXL_INST_STATUS) || protocol_ver_idx_ == 1)
           {
 #if DYNAMIXEL_DEBUG_PRINT == 1
-            print_rx_packet(info_rx_packet_);
+            print_rx_packet(info_rx_packet_, __func__);
 #endif
             p_ret = &info_rx_packet_;
             break;

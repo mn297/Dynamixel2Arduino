@@ -52,6 +52,7 @@ namespace DYNAMIXEL
   } __attribute__((packed));
 
   /* Sync Instructions */
+  // Struct to manage each servo's data in SyncRead
   struct XELInfoSyncRead_t
   {
     uint8_t *p_recv_buf;
@@ -59,6 +60,7 @@ namespace DYNAMIXEL
     uint8_t error;
   } __attribute__((packed));
 
+  // Struct to manage SyncRead in general
   struct InfoSyncReadInst_t
   {
     uint16_t addr;
@@ -69,12 +71,14 @@ namespace DYNAMIXEL
     InfoSyncBulkBuffer_t packet;
   } __attribute__((packed));
 
+  // Struct to manage each servo's data in SyncWrite
   struct XELInfoSyncWrite_t
   {
     uint8_t *p_data;
     uint8_t id;
   } __attribute__((packed));
 
+  // Struct to manage SyncWrite in general
   struct InfoSyncWriteInst_t
   {
     uint16_t addr;
