@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "master.h"
 
-#define DYNAMIXEL_DEBUG_PRINT 1
+#define DYNAMIXEL_DEBUG_PRINT 0
 
 using namespace DYNAMIXEL;
 
